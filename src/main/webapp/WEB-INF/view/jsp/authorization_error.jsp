@@ -15,6 +15,12 @@
 <jsp:include flush="true" page="header.jsp">
     <jsp:param name="title" value="${pageTitle}"/>
 </jsp:include>
-<a href="index"><fmt:message key="auth.go_to_menu"/></a>
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h4><fmt:message key="access.permission"/></h4>
+        </div>
+    </div>
+</div>
 </body>
 </html>

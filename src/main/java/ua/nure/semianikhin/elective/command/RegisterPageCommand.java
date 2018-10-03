@@ -11,7 +11,6 @@ public class RegisterPageCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         session.setAttribute("dispatcher", true);
-        String forward = Path.REGISTER_PAGE;
-        return forward;
+        return Path.REGISTER_PAGE;
     }
 }
