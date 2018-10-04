@@ -44,7 +44,7 @@
                 <label for="endDate"><fmt:message key="admin.edit.course.endDate"/></label>
                 <input required type="date" class="form-control" id="endDate" name="endDate" value="${course.endDate}"><br/>
                 <label for="description"><fmt:message key="admin.edit.course.description"/></label>
-                <input required class="form-control" name="description" id="description" value="${course.description}"><br/>
+                <input required class="form-control" name="description" id="description" maxlength="255" value="${course.description}"><br/>
                 <label for="couches"><fmt:message key="admin.edit.course.coaches"/></label>
                 <select class="form-control" id="couches" name="newCoach">
                     <option value="${coachDefault.idUser}">${coachDefault.firstName} ${coachDefault.lastName}</option>

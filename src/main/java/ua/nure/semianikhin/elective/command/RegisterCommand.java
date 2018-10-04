@@ -38,7 +38,7 @@ public class RegisterCommand implements Command {
             try {
                 userDAO.createUser(user);
                 session.setAttribute("dispatcher", false);
-                forward = Path.LOGIN_PAGE;
+                forward = Path.COMMAND_LOGIN;
             } catch (UserAlreadyExistException e) {
                 String error = "Sorry, this username is already busy. Try another one.";
                 request.setAttribute("error", error);

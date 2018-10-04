@@ -27,10 +27,9 @@ public class LogoutCommand implements Command {
             log.trace("LogoutCommand::execute - Invalidate session, forward to Login Page");
             session.setAttribute("user", null);
             session.setAttribute("userRole", null);
-            session.setAttribute("dispatcher", true);
-            forward = Path.COMMAND_NO_COMMAND;
         }
+        session.setAttribute("dispatcher", false);
         log.debug("LogoutCommand::execute - LogoutCommand finished");
-        return forward;
+        return Path.COMMAND_NO_COMMAND;
     }
 }

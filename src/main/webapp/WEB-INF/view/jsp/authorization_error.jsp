@@ -10,7 +10,7 @@
 <%@ include file="/WEB-INF/view/jsp/directive/taglib.jsp" %>
 <!DOCTYPE html>
 <html>
-<fmt:setBundle basename="strings"/>
+<fmt:setBundle basename="resources"/>
 <fmt:message key="auth.error" var="pageTitle"/>
 <jsp:include flush="true" page="header.jsp">
     <jsp:param name="title" value="${pageTitle}"/>

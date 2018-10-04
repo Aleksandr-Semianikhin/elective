@@ -94,14 +94,22 @@
                                     <td><c:out value="${entry.endDate}"/> </td>
                                     <td><c:out value="${entry.countStudents}"/> </td>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/admin?command=adminActionCourse&crud=page&course=<c:out value="${entry.idCourse}"/>">
-                                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                        </a>
+                                        <form action="admin" method="get">
+                                            <input hidden name="command" value="adminActionCourse">
+                                            <input hidden name="crud" value="page">
+                                            <input hidden name="course" value="${entry.idCourse}">
+                                            <button class="button bubble-legend-symbol" type="submit">
+                                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                            </button></form>
                                     </td>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/admin?command=adminActionCourse&crud=delete&course=<c:out value="${entry.idCourse}"/>">
-                                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                        </a>
+                                        <form action="admin" method="post">
+                                            <input hidden name="command" value="adminActionCourse">
+                                            <input hidden name="crud" value="delete">
+                                            <input hidden name="course" value="${entry.idCourse}">
+                                            <button class="button bubble-legend-symbol" type="submit">
+                                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                            </button></form>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -146,16 +154,24 @@
                                 <c:choose>
                                     <c:when test="${entry.blocked}">
                                         <td>
-                                            <a href="${pageContext.request.contextPath}/admin?command=blockedStudent&state=false&student=${entry.idUser}" >
-                                                <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
-                                            </a>
+                                            <form action="admin" method="post">
+                                                <input hidden name="command" value="blockedStudent">
+                                                <input hidden name="state" value="false">
+                                                <input hidden name="student" value="${entry.idUser}">
+                                                <button class="button bubble-legend-symbol" type="submit">
+                                                    <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
+                                                </button></form>
                                         </td>
                                     </c:when>
                                     <c:otherwise>
                                         <td>
-                                            <a href="${pageContext.request.contextPath}/admin?command=blockedStudent&state=true&student=${entry.idUser}">
-                                                <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
-                                            </a>
+                                            <form action="admin" method="post">
+                                                <input hidden name="command" value="blockedStudent">
+                                                <input hidden name="state" value="true">
+                                                <input hidden name="student" value="${entry.idUser}">
+                                                 <button class="button bubble-legend-symbol" type="submit">
+                                                    <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
+                                                </button></form>
                                         </td>
                                     </c:otherwise>
                                 </c:choose>
@@ -193,14 +209,22 @@
                                 <td><c:out value="${entry.name}"/></td>
                                 <td><c:out value="${entry.description}"/></td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/admin?command=adminActionTag&crud=editPage&tag=${entry.idTag}">
-                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                    </a>
+                                    <form action="admin" method="get">
+                                        <input hidden name="command" value="adminActionTag">
+                                        <input hidden name="crud" value="editPage">
+                                        <input hidden name="tag" value="${entry.idTag}">
+                                        <button class="button bubble-legend-symbol" type="submit">
+                                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                        </button></form>
                                 </td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/admin?command=adminActionTag&crud=delete&tag=${entry.idTag}"/>
-                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                    </a>
+                                    <form action="admin" method="get">
+                                        <input hidden name="command" value="adminActionTag">
+                                        <input hidden name="crud" value="delete">
+                                        <input hidden name="tag" value="${entry.idTag}">
+                                        <button class="button bubble-legend-symbol" type="submit">
+                                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                        </button></form>
                                 </td>
                             </tr>
                             </c:forEach>

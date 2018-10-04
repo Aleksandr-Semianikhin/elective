@@ -49,14 +49,14 @@
                     <c:choose>
                         <c:when test="${entry.statusId eq 2}">
                             <td>
-                                <a href="coach?command=setMarkPage&course=<c:out value="${entry.idCourse}"/>">
+                                <a href="${pageContext.request.contextPath}/coach?command=setMarkPage&course=<c:out value="${entry.idCourse}"/>">
                                     <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
                                 </a>
                             </td>
                         </c:when>
                         <c:otherwise>
                             <td>
-                                <a href="coach?command=getCourseUsers&course=<c:out value="${entry.idCourse}"/>">
+                                <a href="${pageContext.request.contextPath}/coach?command=getCourseUsers&course=<c:out value="${entry.idCourse}"/>">
                                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                                 </a>
                             </td>

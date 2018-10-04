@@ -1,7 +1,6 @@
 package ua.nure.semianikhin.elective.command.admin;
 
 import org.apache.log4j.Logger;
-import sun.rmi.runtime.Log;
 import ua.nure.semianikhin.elective.Path;
 import ua.nure.semianikhin.elective.command.Command;
 import ua.nure.semianikhin.elective.dao.DAOFactory;

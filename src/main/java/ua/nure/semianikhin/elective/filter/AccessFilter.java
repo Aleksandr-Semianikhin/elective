@@ -30,13 +30,26 @@ public class AccessFilter implements Filter{
         if (session.getAttribute("user") != null){
             User user = (User) session.getAttribute("user");
             String forward = null;
-            if (user.getRoleId() == Role.ADMIN.ordinal()&& (uri.contains("/coach")|| uri.contains("/student"))){
+            String command = httpRequest.getParameter("command");
+            if (user.getRoleId() == Role.ADMIN.ordinal()&& (uri.contains("/coach")|| uri.contains("/student")
+                    ||"mainCoachPanel".equals(command) || "setMarkPage".equals(command)|| "setMark".equals(command)
+                    || "getCourseUsers".equals(command)|| "mainStudentPanel".equals(command)
+                    || "registerToCourse".equals(command)|| "unregisterFromCourse".equals(command))){
                 log.trace("AccessFilter::doFilter - User with role ADMIN don't have permission to this page");
                 forward = Path.AUTHORIZATION_ERROR_PAGE;
-            } else if (user.getRoleId() == Role.COACH.ordinal() && (uri.contains("/admin") || uri.contains("/student"))){
+            } else if (user.getRoleId() == Role.COACH.ordinal() && (uri.contains("/admin") || uri.contains("/student")
+                    || "mainAdminPanel".equals(command)|| "adminActionCoach".equals(command)
+                    || "adminActionCourse".equals(command)|| "blockedStudent".equals(command)
+                    || "adminActionTag".equals(command)|| "mainStudentPanel".equals(command)
+                    ||"registerToCourse".equals(command)||"unregisterFromCourse".equals(command))){
                 log.trace("AccessFilter::doFilter - User with role COACH don't have permission to this page");
                 forward = Path.AUTHORIZATION_ERROR_PAGE;
-            } else if (user.getRoleId() == Role.STUDENT.ordinal() && (uri.contains("/admin") || uri.contains("/coach"))){
+            } else if (user.getRoleId() == Role.STUDENT.ordinal() && (uri.contains("/admin") || uri.contains("/coach")
+                    ||"mainAdminPanel".equals(command)||"adminActionCoach".equals(command)
+                    ||"adminActionCourse".equals(command)||"blockedStudent".equals(command)
+                    ||"adminActionTag".equals(command)||"mainCoachPanel".equals(command)
+                    ||"setMarkPage".equals(command)||"setMark".equals(command)
+                    ||"getCourseUsers".equals(command))){
                 log.trace("AccessFilter::doFilter - User with role STUDENT don't have permission to this page");
                 forward = Path.AUTHORIZATION_ERROR_PAGE;
             } else {

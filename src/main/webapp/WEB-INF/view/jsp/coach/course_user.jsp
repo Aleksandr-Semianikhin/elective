@@ -42,7 +42,6 @@
                     </c:forEach>
                     </tbody>
                 </table>
-                <input hidden="true" name="command" value="setMark">
                 <a class="btn btn-info" type="submit" href = ${pageContext.request.contextPath}/coach?command=mainCoachPanel>
                     <fmt:message key="coach.users.back.button"/></a>
         </div>

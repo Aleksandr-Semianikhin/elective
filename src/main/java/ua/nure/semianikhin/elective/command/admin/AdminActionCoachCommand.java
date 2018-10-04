@@ -27,7 +27,7 @@ public class AdminActionCoachCommand implements Command {
         if (action.equals("page")){
             log.trace("AdminActionCoachCommand::execute - Got command to show Create Coach Page");
             session.setAttribute("dispatcher", true);
-            forward = Path.CREATE_COACH_PAGE;
+            forward = Path.ADMIN_CREATE_COACH_PAGE;
         }
 
         if (action.equals("create")){
@@ -41,7 +41,7 @@ public class AdminActionCoachCommand implements Command {
                 String error = "User with such login exist. Try another one";
                 request.setAttribute("error", error);
                 session.setAttribute("dispatcher", true);
-                forward = Path.CREATE_COACH_PAGE;
+                forward = Path.ADMIN_CREATE_COACH_PAGE;
             }else{
                 String password = request.getParameter("password");
                 String firstName = request.getParameter("userFirstName");
@@ -63,11 +63,11 @@ public class AdminActionCoachCommand implements Command {
                     String error = "User with such login exist. Try another one";
                     request.setAttribute("error", error);
                     session.setAttribute("dispatcher", true);
-                    forward = Path.CREATE_COACH_PAGE;
+                    forward = Path.ADMIN_CREATE_COACH_PAGE;
                 }
             }
         }
-        session.setAttribute("dispatcher", true);
+
         return forward;
     }
 }

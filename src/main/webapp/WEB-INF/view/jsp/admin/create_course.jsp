@@ -27,7 +27,7 @@
             <form class="form-group" action="admin" method="post">
                 <input hidden="true" name="command" value="adminActionCourse"/>
                 <input hidden="true" name="crud" value="create"/>
-                <label for="courseName"><c:out value="${error}"/></label>
+                <label for="courseName"><c:out value="${error}"/></label><br/>
                 <label for="courseName"><fmt:message key="admin.create.course.name"/></label>
                 <input required minlength="10" maxlength="45" type="text" class="form-control" id="courseName" name="courseName" value="${course.courseName}"><br/>
                 <label for="tags"><fmt:message key="admin.create.course.tag"/></label>
@@ -37,9 +37,9 @@
                     </c:forEach>
                 </select><br/>
                 <label for="startDate"><fmt:message key="admin.create.course.startDate"/></label>
-                <input required type="date" class="form-control" id="startDate" name="startDate"><br/>
+                <input required type="date" min="" class="form-control" id="startDate" name="startDate"><br/>
                 <label for="endDate"><fmt:message key="admin.course.course.endDate"/></label>
-                <input required type="date" class="form-control" id="endDate" name="endDate"><br/>
+                <input required type="date" min="${startDate}" class="form-control" id="endDate" name="endDate"><br/>
                 <label for="description"><fmt:message key="admin.create.course.description"/></label>
                 <textarea required maxlength="255" class="form-control" name="description" id="description" placeholder="${course.description}"></textarea><br/>
                 <label for="couches"><fmt:message key="admin.create.course.coaches"/></label>

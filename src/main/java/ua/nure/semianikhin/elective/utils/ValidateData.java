@@ -4,10 +4,6 @@ import org.apache.log4j.Logger;
 import ua.nure.semianikhin.elective.dao.UserDAO;
 import ua.nure.semianikhin.elective.enteties.User;
 
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 public class ValidateData {
     private static final Logger log = Logger.getLogger(ValidateData.class);
 
@@ -22,6 +18,8 @@ public class ValidateData {
         log.debug("ValidateData::validateNewLogin - Login validation finished, return true");
         return true;
     }
+
+
 
 
 

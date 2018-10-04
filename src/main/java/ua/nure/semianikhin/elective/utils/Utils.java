@@ -33,6 +33,16 @@ public class Utils {
         }
     }
 
+    public static boolean validateDates(Date startDate, Date endDate){
+        java.util.Date date = new java.util.Date();
+        Date currentDate = new Date(date.getTime());
+        if (startDate.getTime() > endDate.getTime() || startDate.getTime() < currentDate.getTime()
+                || endDate.getTime() < currentDate.getTime()){
+            return false;
+        }
+        return true;
+    }
+
     public static int daysBetween(Date d1, Date d2) {
         return Math.round((d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
     }

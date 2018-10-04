@@ -14,9 +14,7 @@ import ua.nure.semianikhin.elective.enteties.User;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class StudentPanelCommand implements Command {
     @Override
@@ -38,7 +36,7 @@ public class StudentPanelCommand implements Command {
         //get all opened courses where student haven't registered yet
         CourseDAO courseDAO = DAOFactory.getCourseDAO();
         RegisterDAO registerDAO = DAOFactory.getRegisterDao();
-        coursesAvailable = courseDAO.getAllCoursesAvaibleForRegistrationForUser(user);
+        coursesAvailable = courseDAO.getAllCoursesAvailableForRegistrationForUser(user);
         coursesOpened = courseDAO.getAllUserCoursesByStatus(user, Status.OPENED);
         coursesStarted = courseDAO.getAllUserCoursesByStatus(user, Status.STARTED);
         coursesEnded = registerDAO.getAllEntryForUserByStatus(user.getIdUser(), Status.ENDED);

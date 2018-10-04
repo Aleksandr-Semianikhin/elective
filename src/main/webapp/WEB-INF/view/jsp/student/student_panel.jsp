@@ -95,11 +95,11 @@
                             <c:set var="coach" value="${entry.courseCoach}"/>
                             <td><c:out value="${coach.firstName} ${coach.lastName}"/></td>
                             <td><c:out value="${entry.startDate}"/></td>
-                            <td>
-                                <a href="${pageContext.request.contextPath}/student?command=unregisterFromCourse&course=${entry.idCourse}">
-                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                </a>
-                            </td>
+                            <td><form action="student" method="post">
+                                <input hidden="true" value="unregisterFromCourse" name ="command">
+                                <input hidden="true" value="${entry.idCourse}" name ="course">
+                                <button type="submit"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                            </form></td>
                         </tr>
                     </c:forEach>
                     </tbody>

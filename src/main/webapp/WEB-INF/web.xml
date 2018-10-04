@@ -52,7 +52,7 @@
 
   <error-page>
     <error-code>404</error-code>
-    <location>/WEB-INF/view/jsp/authorization_error.jsp</location>
+    <location>/WEB-INF/view/jsp/error_page.jsp</location>
   </error-page>
 </web-app>
 
