@@ -94,14 +94,14 @@ public class CourseDAO {
                 course = (Course)mapper.mapRow(rs);
             }
         } catch (SQLException e) {
-            log.error("SQLException in CourseDAO::getCoursesByTag", e);
+            log.error("SQLException in CourseDAO::getCourseById", e);
             ConnectionPool.getInstance().rollbackAndClose(connection);
         } finally {
             if (rs != null){
                 try{
                     rs.close();
                 } catch (SQLException e) {
-                    log.error("SQLException in CourseDAO::getCoursesByTag - can't close Result Set", e);
+                    log.error("SQLException in CourseDAO::getCourseById - can't close Result Set", e);
                 }
             }
 
@@ -109,7 +109,7 @@ public class CourseDAO {
                 try{
                     ps.close();
                 } catch (SQLException e) {
-                    log.error("SQLException in CourseDAO::getCoursesByTag - can't close Prepared Statement", e);
+                    log.error("SQLException in CourseDAO::getCourseById - can't close Prepared Statement", e);
                 }
             }
 
@@ -216,14 +216,14 @@ public class CourseDAO {
                 courses.add(course);
             }
         } catch (SQLException e) {
-            log.error("SQLException in CourseDAO::getAllCourses", e);
+            log.error("SQLException in CourseDAO::getAllCoursesAvailableForRegistrationForUser", e);
             ConnectionPool.getInstance().rollbackAndClose(connection);
         } finally {
             if (rs != null){
                 try{
                     rs.close();
                 } catch (SQLException e) {
-                    log.error("SQLException in CourseDAO::getAllCourses - can't close Result Set", e);
+                    log.error("SQLException in CourseDAO::getAllCoursesAvailableForRegistrationForUser - can't close Result Set", e);
                 }
             }
 
@@ -231,7 +231,7 @@ public class CourseDAO {
                 try{
                     ps.close();
                 } catch (SQLException e) {
-                    log.error("SQLException in CourseDAO::getAllCourses - can't close Prepared Statement", e);
+                    log.error("SQLException in CourseDAO::getAllCoursesAvailableForRegistrationForUser - can't close Prepared Statement", e);
                 }
             }
 

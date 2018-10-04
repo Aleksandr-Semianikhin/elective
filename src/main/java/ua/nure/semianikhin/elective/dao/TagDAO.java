@@ -216,7 +216,7 @@ public class TagDAO {
                 tag.setDescription(rs.getString(Fields.TAG_DESCRIPTION));
                 return tag;
             } catch (SQLException e) {
-                log.error("SQLException in TagDao::UserMapper::mapRow",e);
+                log.error("SQLException in TagDao::TagMapper::mapRow",e);
                 throw new IllegalStateException();
             }
         }

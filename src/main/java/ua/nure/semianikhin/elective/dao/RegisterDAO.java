@@ -82,7 +82,7 @@ public class RegisterDAO {
                 entries.add(entry);
             }
         }catch (SQLException e) {
-            log.error("SQLException in RegisterDAO::getAllEntryForUser", e);
+            log.error("SQLException in RegisterDAO::getAllEntryForUserByStatus", e);
             ConnectionPool.getInstance().rollbackAndClose(connection);
         } finally {
 
@@ -90,7 +90,8 @@ public class RegisterDAO {
                 try{
                     ps.close();
                 } catch (SQLException e) {
-                    log.error("SQLException in RegisterDAO::getAllEntryForUser - can't close Prepared Statement", e);
+                    log.error("SQLException in RegisterDAO::getAllEntryForUserByStatus" +
+                            " - can't close Prepared Statement", e);
                 }
             }
 
@@ -114,7 +115,7 @@ public class RegisterDAO {
                 entries.add(entry);
             }
         }catch (SQLException e) {
-            log.error("SQLException in RegisterDAO::getAllEntryForUser", e);
+            log.error("SQLException in RegisterDAO::getAllEntryByCourse", e);
             ConnectionPool.getInstance().rollbackAndClose(connection);
         } finally {
 
@@ -122,7 +123,8 @@ public class RegisterDAO {
                 try{
                     ps.close();
                 } catch (SQLException e) {
-                    log.error("SQLException in RegisterDAO::getAllEntryForUser - can't close Prepared Statement", e);
+                    log.error("SQLException in RegisterDAO::getAllEntryByCourse" +
+                            " - can't close Prepared Statement", e);
                 }
             }
 
@@ -167,7 +169,7 @@ public class RegisterDAO {
             ps.setInt(2, entryId);
             ps.executeUpdate();
         }catch (SQLException e) {
-            log.error("SQLException in RegisterDAO::createEntryInRegister", e);
+            log.error("SQLException in RegisterDAO::setUserMarkByIdEntry", e);
             ConnectionPool.getInstance().rollbackAndClose(connection);
         } finally {
 
@@ -175,7 +177,7 @@ public class RegisterDAO {
                 try{
                     ps.close();
                 } catch (SQLException e) {
-                    log.error("SQLException in RegisterDAO::createEntryInRegister - can't close Prepared Statement", e);
+                    log.error("SQLException in RegisterDAO::setUserMarkByIdEntry - can't close Prepared Statement", e);
                 }
             }
 
