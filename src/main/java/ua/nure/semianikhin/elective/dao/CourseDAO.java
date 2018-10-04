@@ -18,10 +18,12 @@ import java.util.Properties;
 public class CourseDAO {
     static final Logger log = Logger.getLogger(CourseDAO.class);
     private Properties sqlStatements;
+    private EntityMapper mapper;
 
     public CourseDAO() {
         sqlStatements = new Properties();
         InputStream inputStream = this.getClass().getResourceAsStream("/sql.properties");
+        mapper = new CourseMapper();
         try{
             sqlStatements.load(inputStream);
         } catch (FileNotFoundException e) {
@@ -42,14 +44,13 @@ public class CourseDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try{
-            CourseMapper mapper = new CourseMapper();
             connection = ConnectionPool.getInstance().getConnection();
             ps = connection.prepareStatement(sqlStatements.getProperty("READ_ALL_COURSE_BY_TAG"));
 
             ps.setInt(1, tagId);
             rs = ps.executeQuery();
             while (rs.next()){
-                Course course = mapper.mapRow(rs);
+                Course course = (Course)mapper.mapRow(rs);
                 courses.add(course);
             }
         } catch (SQLException e) {
@@ -84,14 +85,13 @@ public class CourseDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try{
-            CourseMapper mapper = new CourseMapper();
             connection = ConnectionPool.getInstance().getConnection();
             ps = connection.prepareStatement(sqlStatements.getProperty("READ_COURSE_BY_ID"));
 
             ps.setInt(1,id);
             rs = ps.executeQuery();
             if (rs.next()){
-                course = mapper.mapRow(rs);
+                course = (Course)mapper.mapRow(rs);
             }
         } catch (SQLException e) {
             log.error("SQLException in CourseDAO::getCoursesByTag", e);
@@ -125,14 +125,13 @@ public class CourseDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try{
-            CourseMapper mapper = new CourseMapper();
             connection = ConnectionPool.getInstance().getConnection();
             ps = connection.prepareStatement(sqlStatements.getProperty("READ_ALL_COURSE_BY_COACH"));
 
             ps.setInt(1,userId);
             rs = ps.executeQuery();
             while (rs.next()){
-                Course course = mapper.mapRow(rs);
+                Course course = (Course)mapper.mapRow(rs);
                 courses.add(course);
             }
         } catch (SQLException e) {
@@ -167,13 +166,12 @@ public class CourseDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try{
-            CourseMapper mapper = new CourseMapper();
             connection = ConnectionPool.getInstance().getConnection();
             ps = connection.prepareStatement(sqlStatements.getProperty("READ_ALL_COURSE"));
 
             rs = ps.executeQuery();
             while (rs.next()){
-                Course course = mapper.mapRow(rs);
+                Course course = (Course)mapper.mapRow(rs);
                 courses.add(course);
             }
         } catch (SQLException e) {
@@ -202,12 +200,11 @@ public class CourseDAO {
         return courses;
     }
 
-    public List<Course> getAllCoursesAvaibleForRegistrationForUser(User user){
+    public List<Course> getAllCoursesAvailableForRegistrationForUser(User user){
         List<Course> courses = new ArrayList<>();
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        CourseMapper mapper = new CourseMapper();
         try{
             connection = ConnectionPool.getInstance().getConnection();
             ps = connection.prepareStatement(sqlStatements.getProperty("READ_ALL_COURSE_AVAILABLE_FOR_REGISTRATION_FOR_USER"));
@@ -215,7 +212,7 @@ public class CourseDAO {
             ps.setInt(2,Status.OPENED.ordinal());
             rs = ps.executeQuery();
             while (rs.next()){
-                Course course = mapper.mapRow(rs);
+                Course course = (Course)mapper.mapRow(rs);
                 courses.add(course);
             }
         } catch (SQLException e) {
@@ -248,7 +245,6 @@ public class CourseDAO {
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        CourseMapper mapper = new CourseMapper();
         try{
             connection = ConnectionPool.getInstance().getConnection();
             ps = connection.prepareStatement(sqlStatements.getProperty("READ_ALL_USER_COURSES_BY_STATUS"));
@@ -256,7 +252,7 @@ public class CourseDAO {
             ps.setInt(2,status.ordinal());
             rs = ps.executeQuery();
             while (rs.next()){
-                Course course = mapper.mapRow(rs);
+                Course course = (Course)mapper.mapRow(rs);
                 courses.add(course);
             }
         } catch (SQLException e) {
@@ -398,7 +394,6 @@ public class CourseDAO {
         }
     }
 
-
     public void deleteCourse(Course course){
         Connection connection = null;
         PreparedStatement ps = null;
@@ -454,11 +449,4 @@ public class CourseDAO {
         }
     }
 
-//    public static void main(String[] args) {
-//        CourseDAO courseDAO = new CourseDAO();
-//        List<Course> courses = courseDAO.getAllCourses();
-//        for (Course c : courses){
-//            System.out.println(c);
-//        }
-//    }
 }

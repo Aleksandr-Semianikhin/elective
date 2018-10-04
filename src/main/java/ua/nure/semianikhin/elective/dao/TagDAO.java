@@ -19,7 +19,7 @@ public class TagDAO {
     private Properties sqlStatements;
     private EntityMapper mapper;
 
-    public TagDAO() {
+    TagDAO() {
         sqlStatements = new Properties();
         InputStream inputStream = this.getClass().getResourceAsStream("/sql.properties");
         mapper = new TagMapper();
@@ -82,14 +82,13 @@ public class TagDAO {
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        TagMapper mapper = new TagMapper();
         try{
             connection = ConnectionPool.getInstance().getConnection();
             ps = connection.prepareStatement(sqlStatements.getProperty("READ_ALL_TAGS"));
 
             rs=ps.executeQuery();
             while (rs.next()){
-                Tag tag = mapper.mapRow(rs);
+                Tag tag = (Tag) mapper.mapRow(rs);
                 tags.add(tag);
             }
 
@@ -117,46 +116,6 @@ public class TagDAO {
         }
 
         return tags;
-    }
-
-    public Tag getTagByName(String name){
-        Tag tag = null;
-        Connection connection = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try{
-            TagMapper mapper = new TagMapper();
-            connection = ConnectionPool.getInstance().getConnection();
-            ps = connection.prepareStatement(sqlStatements.getProperty("READ_TAG_BY_NAME"));
-
-            ps.setString(1, name);
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                tag = mapper.mapRow(rs);
-            }
-        } catch (SQLException e) {
-            log.error("SQLException in TagDAO::getTagByName",e);
-            ConnectionPool.getInstance().rollbackAndClose(connection);
-        } finally {
-            if (rs != null){
-                try{
-                    rs.close();
-                } catch (SQLException e) {
-                    log.error("SQLException in TagDAO::getTagByName - can't close Result Set",e);
-                }
-            }
-
-            if (ps != null){
-                try{
-                    ps.close();
-                } catch (SQLException e) {
-                    log.error("SQLException in TagDAO::getTagByName - can't close Prepared Statement",e);
-                }
-            }
-
-            ConnectionPool.getInstance().commitAndClose(connection);
-        }
-        return tag;
     }
 
     public void createTag(Tag tag){

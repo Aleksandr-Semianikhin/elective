@@ -20,10 +20,12 @@ import java.util.Properties;
 public class RegisterDAO {
     static final Logger log = Logger.getLogger(RegisterDAO.class);
     private Properties sqlStatements;
+    private EntityMapper mapper;
 
-    public RegisterDAO() {
+    RegisterDAO() {
         sqlStatements = new Properties();
         InputStream inputStream = this.getClass().getResourceAsStream("/sql.properties");
+        mapper = new RegisterMapper();
         try{
             sqlStatements.load(inputStream);
         } catch (FileNotFoundException e) {
@@ -64,47 +66,11 @@ public class RegisterDAO {
         }
     }
 
-    public List<Register> getAllEntryForUser(int userId){
-        List<Register> entries = new ArrayList<>();
-        Connection connection = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        Register register;
-        RegisterMapper mapper = new RegisterMapper();
-        try{
-            connection = ConnectionPool.getInstance().getConnection();
-            ps = connection.prepareStatement(sqlStatements.getProperty("READ_ALL_ENTRY_BY_USER_ID"));
-            ps.setInt(1, userId);
-            rs = ps.executeQuery();
-            while (rs.next()){
-                Register entry = mapper.mapRow(rs);
-                entries.add(entry);
-            }
-        }catch (SQLException e) {
-            log.error("SQLException in RegisterDAO::getAllEntryForUser", e);
-            ConnectionPool.getInstance().rollbackAndClose(connection);
-        } finally {
-
-            if (ps != null) {
-                try{
-                    ps.close();
-                } catch (SQLException e) {
-                    log.error("SQLException in RegisterDAO::getAllEntryForUser - can't close Prepared Statement", e);
-                }
-            }
-
-            ConnectionPool.getInstance().commitAndClose(connection);
-        }
-        return entries;
-    }
-
     public List<Register> getAllEntryForUserByStatus(int userId, Status status){
         List<Register> entries = new ArrayList<>();
         Connection connection = null;
         PreparedStatement ps = null;
-        ResultSet rs = null;
-        Register register;
-        RegisterMapper mapper = new RegisterMapper();
+        ResultSet rs;
         try{
             connection = ConnectionPool.getInstance().getConnection();
             ps = connection.prepareStatement(sqlStatements.getProperty("READ_ALL_ENTRY_FOR_USER_ID_BY_STATUS"));
@@ -112,7 +78,7 @@ public class RegisterDAO {
             ps.setInt(2, status.ordinal());
             rs = ps.executeQuery();
             while (rs.next()){
-                Register entry = mapper.mapRow(rs);
+                Register entry = (Register) mapper.mapRow(rs);
                 entries.add(entry);
             }
         }catch (SQLException e) {
@@ -137,16 +103,14 @@ public class RegisterDAO {
         List<Register> entries = new ArrayList<>();
         Connection connection = null;
         PreparedStatement ps = null;
-        ResultSet rs = null;
-        Register register;
-        RegisterMapper mapper = new RegisterMapper();
+        ResultSet rs;
         try{
             connection = ConnectionPool.getInstance().getConnection();
             ps = connection.prepareStatement(sqlStatements.getProperty("READ_ALL_ENTRY_BY_COURSE_ID"));
             ps.setInt(1, courseId);
             rs = ps.executeQuery();
             while (rs.next()){
-                Register entry = mapper.mapRow(rs);
+                Register entry = (Register)mapper.mapRow(rs);
                 entries.add(entry);
             }
         }catch (SQLException e) {

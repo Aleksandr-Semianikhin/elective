@@ -1,7 +1,5 @@
 package ua.nure.semianikhin.elective.dao;
 
-import java.sql.SQLException;
-
 public class DAOFactory {
 
     public static CourseDAO getCourseDAO(){

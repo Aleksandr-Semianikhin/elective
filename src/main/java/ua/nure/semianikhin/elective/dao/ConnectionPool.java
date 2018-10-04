@@ -8,18 +8,14 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
  *DB Manager works with
  * Only the required DAO methods are defined!
- *
- *@author Aleksandr Semianikhin
- *
  */
 
-public class ConnectionPool {
+class ConnectionPool {
 
     private static final Logger log = Logger.getLogger(ConnectionPool.class);
     /**
@@ -30,7 +26,7 @@ public class ConnectionPool {
 
     private static ConnectionPool instance;
 
-    public static synchronized ConnectionPool getInstance() {
+    static synchronized ConnectionPool getInstance() {
         if (instance == null)
             instance = new ConnectionPool();
         return instance;
@@ -44,7 +40,7 @@ public class ConnectionPool {
      *
      * @return A DB connection.
      */
-    public Connection getConnection() throws SQLException {
+    Connection getConnection() throws SQLException {
         Connection con = null;
         try {
             Context initContext = new InitialContext();
@@ -60,25 +56,13 @@ public class ConnectionPool {
         return con;
     }
 
-
-//     public Connection getConnection() throws SQLException{
-//         try {
-//             Class.forName("com.mysql.jdbc.Driver");
-//         } catch (ClassNotFoundException e) {
-//             e.printStackTrace();
-//         }
-//         Connection conn = DriverManager
-//                 .getConnection("jdbc:mysql://localhost:3307/elective", "root","hvObPefEX0VbA8t");
-//         return conn;
-//     }
-
     /**
      * Commits and close the given connection.
      *
      * @param con
      *            Connection to be committed and closed.
      */
-    public void commitAndClose(Connection con) {
+    void commitAndClose(Connection con) {
         if (con != null) {
             try {
                 con.commit();
@@ -95,7 +79,7 @@ public class ConnectionPool {
      * @param con
      *            Connection to be rollbacked and closed.
      */
-    public void rollbackAndClose(Connection con) {
+    void rollbackAndClose(Connection con) {
         if (con != null){
             try {
                 con.rollback();

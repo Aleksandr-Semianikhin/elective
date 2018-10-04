@@ -1,7 +1,5 @@
 package ua.nure.semianikhin.elective.dao;
 
-import java.sql.*;
-
 import org.apache.log4j.Logger;
 import ua.nure.semianikhin.elective.enteties.User;
 import ua.nure.semianikhin.elective.exception.UserAlreadyExistException;
@@ -9,6 +7,7 @@ import ua.nure.semianikhin.elective.exception.UserAlreadyExistException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -16,10 +15,12 @@ import java.util.Properties;
 public class UserDAO {
     static final Logger log = Logger.getLogger(UserDAO.class);
     private Properties sqlStatements;
+    private EntityMapper mapper;
 
     public UserDAO() {
         sqlStatements = new Properties();
         InputStream inputStream = this.getClass().getResourceAsStream("/sql.properties");
+        mapper = new UserMapper();
         try{
             sqlStatements.load(inputStream);
         } catch (FileNotFoundException e) {
@@ -40,14 +41,13 @@ public class UserDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try{
-            UserMapper mapper = new UserMapper();
             connection = ConnectionPool.getInstance().getConnection();
             ps = connection.prepareStatement(sqlStatements.getProperty("READ_USER_BY_ID"));
 
             ps.setInt(1, id);
             rs = ps.executeQuery();
             if(rs.next()) {
-                user = mapper.mapRow(rs);
+                user = (User)mapper.mapRow(rs);
             }
         } catch (SQLException e) {
             log.error("SQLException in UserDAO::getUserById", e);
@@ -81,13 +81,12 @@ public class UserDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try{
-            UserMapper mapper = new UserMapper();
             connection = ConnectionPool.getInstance().getConnection();
             ps = connection.prepareStatement(sqlStatements.getProperty("READ_USER_BY_LOGIN"));
             ps.setString(1, login);
             rs = ps.executeQuery();
             if (rs.next()) {
-                user = mapper.mapRow(rs);
+                user = (User)mapper.mapRow(rs);
             }
         } catch (SQLException e) {
             log.error("SQLException in UserDAO::getUserByLogin", e);
@@ -120,14 +119,13 @@ public class UserDAO {
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        UserMapper mapper = new UserMapper();
         try{
             connection = ConnectionPool.getInstance().getConnection();
             ps = connection.prepareStatement(sqlStatements.getProperty("READ_ALL_USER_BY_ROLE_ID"));
             ps.setInt(1, roleId);
             rs = ps.executeQuery();
             while(rs.next()){
-                User user = mapper.mapRow(rs);
+                User user = (User)mapper.mapRow(rs);
                 users.add(user);
             }
         } catch (SQLException e) {
@@ -222,73 +220,6 @@ public class UserDAO {
         }
     }
 
-    public void updateUser(User user) throws UserAlreadyExistException {
-        Connection connection = null;
-        PreparedStatement ps = null;
-        try{
-            connection = ConnectionPool.getInstance().getConnection();
-            ps = connection.prepareStatement(sqlStatements.getProperty("UPDATE_USER_BY_ID"));
-
-            ps.setString(1, user.getFirstName());
-            ps.setString(2, user.getLastName());
-            ps.setInt(3, user.getRoleId());
-            ps.setBoolean(4, user.isBlocked());
-            ps.setInt(5,user.getIdUser());
-
-            ps.executeUpdate();
-
-        } catch (SQLIntegrityConstraintViolationException e){
-            log.error("SQLIntegrityConstraintViolationException in UserDAO::updateUser" +
-                    " - Inserting duplicate key", e);
-            throw new UserAlreadyExistException("SQLIntegrityConstraintViolationException in " +
-                    "UserDAO::updateUser - Inserting duplicate key", e);
-        } catch (SQLException e) {
-            log.error("SQLException in UserDAO::updateUser", e);
-            ConnectionPool.getInstance().rollbackAndClose(connection);
-        } finally {
-
-            if (ps != null) {
-                try{
-                    ps.close();
-                } catch (SQLException e) {
-                    log.error("SQLException in UserDAO::updateUser - can't close Prepared Statement", e);
-                }
-            }
-
-            ConnectionPool.getInstance().commitAndClose(connection);
-        }
-    }
-
-    public void deleteUser(User user){
-        Connection connection = null;
-        PreparedStatement ps = null;
-        try{
-            connection = ConnectionPool.getInstance().getConnection();
-            ps = connection.prepareStatement(sqlStatements.getProperty("DELETE_USER_BY_ID"));
-
-            ps.setInt(1,user.getIdUser());
-
-            ps.executeUpdate();
-
-        } catch (SQLException e) {
-            log.error("SQLException in UserDAO::deleteUser", e);
-            ConnectionPool.getInstance().rollbackAndClose(connection);
-        } finally {
-
-            if (ps != null) {
-                try{
-                    ps.close();
-                } catch (SQLException e) {
-                    log.error("SQLException in UserDAO::deleteUser - can't close Prepared Statement", e);
-                }
-            }
-
-            ConnectionPool.getInstance().commitAndClose(connection);
-        }
-    }
-
-
-
     private static class UserMapper implements EntityMapper<User>{
 
         @Override
@@ -308,15 +239,7 @@ public class UserDAO {
                 throw new IllegalStateException();
             }
         }
+
     }
 
-//    public static void main(String[] args) throws SQLException {
-//        User user = new UserDAO().getUserById(1);
-//        System.out.println(user);
-////        Connection conn = ConnectionPool.getInstance().getConnection();
-////        PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE user_login=?");
-////        ps.setString(1,"admin");
-////        ResultSet rs = ps.executeQuery();
-////        System.out.println(rs);
-//    }
 }
