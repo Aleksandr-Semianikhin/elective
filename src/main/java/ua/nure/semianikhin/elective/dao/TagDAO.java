@@ -17,10 +17,12 @@ import java.util.Properties;
 public class TagDAO {
     static final Logger log = Logger.getLogger(TagDAO.class);
     private Properties sqlStatements;
+    private EntityMapper mapper;
 
     public TagDAO() {
         sqlStatements = new Properties();
         InputStream inputStream = this.getClass().getResourceAsStream("/sql.properties");
+        mapper = new TagMapper();
         try{
             sqlStatements.load(inputStream);
         } catch (FileNotFoundException e) {
@@ -41,14 +43,13 @@ public class TagDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try{
-            TagMapper mapper = new TagMapper();
             connection = ConnectionPool.getInstance().getConnection();
             ps = connection.prepareStatement(sqlStatements.getProperty("READ_TAG_BY_ID"));
 
             ps.setInt(1, id);
             rs = ps.executeQuery();
             if (rs.next()) {
-                tag = mapper.mapRow(rs);
+                tag = (Tag)mapper.mapRow(rs);
             }
         } catch (SQLException e) {
             log.error("SQLException in TagDAO::getTagById",e);
@@ -71,6 +72,7 @@ public class TagDAO {
             }
 
             ConnectionPool.getInstance().commitAndClose(connection);
+            mapper = null;
         }
         return tag;
     }
