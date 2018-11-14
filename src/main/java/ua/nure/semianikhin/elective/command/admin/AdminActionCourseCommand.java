@@ -3,11 +3,10 @@ package ua.nure.semianikhin.elective.command.admin;
 import org.apache.log4j.Logger;
 import ua.nure.semianikhin.elective.Path;
 import ua.nure.semianikhin.elective.command.Command;
-import ua.nure.semianikhin.elective.dao.CourseDAO;
-import ua.nure.semianikhin.elective.dao.DAOFactory;
-import ua.nure.semianikhin.elective.dao.TagDAO;
-import ua.nure.semianikhin.elective.dao.UserDAO;
-import ua.nure.semianikhin.elective.enteties.*;
+import ua.nure.semianikhin.elective.dao.*;
+import ua.nure.semianikhin.elective.dao.MySqlImpl.CourseDAOImplMySql;
+import ua.nure.semianikhin.elective.dao.MySqlImpl.UserDAOImplMySql;
+import ua.nure.semianikhin.elective.domain.*;
 import ua.nure.semianikhin.elective.exception.CourseAlreadyExistException;
 import ua.nure.semianikhin.elective.utils.Utils;
 
@@ -15,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,10 +30,10 @@ public class AdminActionCourseCommand implements Command {
         HttpSession session = request.getSession();
         String action = request.getParameter("crud");
         log.trace("AdminActionCourseCommand::execute - Get from request parameter \"crud\": " + action);
-        UserDAO userDAO = DAOFactory.getUserDAO();
-        TagDAO tagDAO = DAOFactory.getTagDAO();
-        CourseDAO courseDAO = DAOFactory.getCourseDAO();
-        List<Tag> tags;
+        IUserDAO userDAO = DAOFactory.getUserDAO();
+        ITagDAO tagDao = DAOFactory.getTagDAO();
+        ICourseDAO courseDAO = DAOFactory.getCourseDAO();
+        List<Tag> tags=null;
         List<User> coaches;
         if (action.equals("page")){
             //get courseId from request
@@ -59,7 +59,7 @@ public class AdminActionCourseCommand implements Command {
             }
             request.setAttribute("coaches", coaches);
             //add tags to request
-            tags = tagDAO.getAllTags();
+            tags = tagDao.getAllTags();
             request.setAttribute("tags", tags);
             session.setAttribute("dispatcher", true);
             log.trace("AdminActionCourseCommand::execute - Got command to show Edit Course Page");
@@ -85,7 +85,8 @@ public class AdminActionCourseCommand implements Command {
             Date endDate = Utils.getMySQLDate(strEndDate);
             Status courseStatus = Utils.getStatus(startDate, endDate);
             course.setStatusId(courseStatus.ordinal());
-            Tag newTag = tagDAO.getTagById(tagId);
+            Tag newTag = null;
+            newTag = tagDao.getTagById(tagId);
             course.setTag(newTag);
             course.setStartDate(startDate);
             course.setEndDate(endDate);
@@ -115,7 +116,7 @@ public class AdminActionCourseCommand implements Command {
 
         if (action.equals("createPage")){
             log.trace("AdminActionCourseCommand::execute - Got command to show create new course page");
-            tags = tagDAO.getAllTags();
+            tags = tagDao.getAllTags();
             request.setAttribute("tags", tags);
             coaches = userDAO.getUsersByRole(Role.COACH.ordinal());
             request.setAttribute("coaches", coaches);
@@ -147,7 +148,8 @@ public class AdminActionCourseCommand implements Command {
                 course.setCourseCoach(newCoach);
                 Status courseStatus = Utils.getStatus(startDate, endDate);
                 course.setStatusId(courseStatus.ordinal());
-                Tag newTag = tagDAO.getTagById(tagId);
+                Tag newTag = null;
+                newTag = tagDao.getTagById(tagId);
                 course.setTag(newTag);
                 course.setStartDate(startDate);
                 course.setEndDate(endDate);

@@ -4,7 +4,8 @@ import org.apache.log4j.Logger;
 import ua.nure.semianikhin.elective.Path;
 import ua.nure.semianikhin.elective.command.Command;
 import ua.nure.semianikhin.elective.dao.DAOFactory;
-import ua.nure.semianikhin.elective.dao.UserDAO;
+import ua.nure.semianikhin.elective.dao.IUserDAO;
+import ua.nure.semianikhin.elective.dao.MySqlImpl.UserDAOImplMySql;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,7 +26,7 @@ public class BlockedStudentCommand implements Command {
             blockedFlag = true;
         }
         log.trace("BlockedStudentCommand::execute - Get flag=" + blockedFlag + " for user with id=" + studentId);
-        UserDAO userDAO = DAOFactory.getUserDAO();
+        IUserDAO userDAO = DAOFactory.getUserDAO();
         userDAO.setBlockedFlag(blockedFlag, studentId);
         session.setAttribute("dispatcher", false);
         forward = Path.COMMAND_ADMIN_PAGE;

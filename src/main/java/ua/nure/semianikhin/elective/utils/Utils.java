@@ -2,8 +2,8 @@ package ua.nure.semianikhin.elective.utils;
 
 
 import org.apache.log4j.Logger;
-import ua.nure.semianikhin.elective.enteties.Course;
-import ua.nure.semianikhin.elective.enteties.Status;
+import ua.nure.semianikhin.elective.domain.Course;
+import ua.nure.semianikhin.elective.domain.Status;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Date;

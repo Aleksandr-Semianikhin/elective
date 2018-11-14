@@ -3,10 +3,11 @@ package ua.nure.semianikhin.elective.listener;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import ua.nure.semianikhin.elective.dao.CourseDAO;
+import ua.nure.semianikhin.elective.dao.ICourseDAO;
+import ua.nure.semianikhin.elective.dao.MySqlImpl.CourseDAOImplMySql;
 import ua.nure.semianikhin.elective.dao.DAOFactory;
-import ua.nure.semianikhin.elective.enteties.Course;
-import ua.nure.semianikhin.elective.enteties.Status;
+import ua.nure.semianikhin.elective.domain.Course;
+import ua.nure.semianikhin.elective.domain.Status;
 import ua.nure.semianikhin.elective.exception.CourseAlreadyExistException;
 import ua.nure.semianikhin.elective.utils.Utils;
 
@@ -29,7 +30,7 @@ public class ContextLIstener implements ServletContextListener {
     private static Runnable updateStatus = new Runnable() {
         @Override
         public void run() {
-            CourseDAO courseDAO = DAOFactory.getCourseDAO();
+            ICourseDAO courseDAO = DAOFactory.getCourseDAO();
             List<Course> courses = courseDAO.getAllCourses();
             for (Course course : courses){
                 Date startDate = course.getStartDate();

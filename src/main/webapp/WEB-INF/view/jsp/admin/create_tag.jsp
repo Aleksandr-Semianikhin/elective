@@ -30,8 +30,6 @@
                 <label for="name"><c:out value="${error}"/></label>
                 <label for="name"><fmt:message key="admin.create.tag.name"/></label>
                 <input required minlength="2" maxlength="20" type="text" name="name" id="name" class="form-control">
-                <label for="description"><fmt:message key="admin.create.tag.description"/></label>
-                <input required minlength="10" maxlength="300" class="form-control" name="description" id="description" /><br/>
                 <button class="btn btn-info" type="submit">
                     <fmt:message key="admin.create.tag.button"/></button>
             </form>

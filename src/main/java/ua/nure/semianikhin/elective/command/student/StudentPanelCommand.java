@@ -2,14 +2,12 @@ package ua.nure.semianikhin.elective.command.student;
 
 import ua.nure.semianikhin.elective.Path;
 import ua.nure.semianikhin.elective.command.Command;
-import ua.nure.semianikhin.elective.dao.CourseDAO;
-import ua.nure.semianikhin.elective.dao.DAOFactory;
+import ua.nure.semianikhin.elective.dao.*;
 
-import ua.nure.semianikhin.elective.dao.RegisterDAO;
-import ua.nure.semianikhin.elective.enteties.Course;
-import ua.nure.semianikhin.elective.enteties.Register;
-import ua.nure.semianikhin.elective.enteties.Status;
-import ua.nure.semianikhin.elective.enteties.User;
+import ua.nure.semianikhin.elective.domain.Course;
+import ua.nure.semianikhin.elective.domain.Register;
+import ua.nure.semianikhin.elective.domain.Status;
+import ua.nure.semianikhin.elective.domain.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,11 +32,11 @@ public class StudentPanelCommand implements Command {
         List<Register> coursesEnded = null;
 
         //get all opened courses where student haven't registered yet
-        CourseDAO courseDAO = DAOFactory.getCourseDAO();
-        RegisterDAO registerDAO = DAOFactory.getRegisterDao();
-        coursesAvailable = courseDAO.getAllCoursesAvailableForRegistrationForUser(user);
-        coursesOpened = courseDAO.getAllUserCoursesByStatus(user, Status.OPENED);
-        coursesStarted = courseDAO.getAllUserCoursesByStatus(user, Status.STARTED);
+        ICourseDAO courseDAO = DAOFactory.getCourseDAO();
+        IRegisterDAO registerDAO = DAOFactory.getRegisterDao();
+        coursesAvailable = courseDAO.getAllCoursesAvailableForRegistrationForUser(user.getIdUser());
+        coursesOpened = courseDAO.getAllUserCoursesByStatus(user.getIdUser(), Status.OPENED);
+        coursesStarted = courseDAO.getAllUserCoursesByStatus(user.getIdUser(), Status.STARTED);
         coursesEnded = registerDAO.getAllEntryForUserByStatus(user.getIdUser(), Status.ENDED);
 
         //set all necessary lists and map to request

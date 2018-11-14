@@ -1,6 +1,6 @@
 package ua.nure.semianikhin.elective.command;
 
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j;
 import ua.nure.semianikhin.elective.command.admin.*;
 import ua.nure.semianikhin.elective.command.coach.CoachPanelCommand;
 import ua.nure.semianikhin.elective.command.coach.GetCourseUsersCommand;
@@ -13,11 +13,10 @@ import ua.nure.semianikhin.elective.command.student.UnregisterFromCourseCommand;
 import java.util.HashMap;
 import java.util.Map;
 
+@Log4j
 public class CommandFactory {
     private static Map<String, Command> commands;
     private static CommandFactory factoryInstance;
-
-    private static final Logger log = Logger.getLogger(CommandFactory.class);
 
     private CommandFactory(){
         log.debug("Command Factory::CommandFactory - Initialization started");

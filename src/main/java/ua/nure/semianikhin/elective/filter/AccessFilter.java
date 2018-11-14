@@ -2,8 +2,8 @@ package ua.nure.semianikhin.elective.filter;
 
 import org.apache.log4j.Logger;
 import ua.nure.semianikhin.elective.Path;
-import ua.nure.semianikhin.elective.enteties.Role;
-import ua.nure.semianikhin.elective.enteties.User;
+import ua.nure.semianikhin.elective.domain.Role;
+import ua.nure.semianikhin.elective.domain.User;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

@@ -1,18 +1,17 @@
 package ua.nure.semianikhin.elective.command;
 
+import lombok.extern.log4j.Log4j;
 import org.apache.log4j.Logger;
 import ua.nure.semianikhin.elective.Path;
 import ua.nure.semianikhin.elective.dao.DAOFactory;
-import ua.nure.semianikhin.elective.dao.UserDAO;
-import ua.nure.semianikhin.elective.enteties.Role;
-import ua.nure.semianikhin.elective.enteties.User;
+import ua.nure.semianikhin.elective.dao.IUserDAO;
+import ua.nure.semianikhin.elective.domain.Role;
+import ua.nure.semianikhin.elective.domain.User;
+import ua.nure.semianikhin.elective.services.UserService;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 /**
  *Login command.
@@ -21,9 +20,13 @@ import java.io.IOException;
  *
  */
 
+@Log4j
 public class LoginCommand implements Command {
 
-    private static final Logger log = Logger.getLogger(LoginCommand.class);
+    private static UserService userService;
+    static {
+        userService = new UserService();
+    }
 
 
     @Override
@@ -37,7 +40,7 @@ public class LoginCommand implements Command {
         log.trace("LoginCommand::execute - Got from session \"userRole\": " + userRole);
         if (userRole != null){
             forward = Path.COMMAND_NO_COMMAND;
-            session.setAttribute("dispatcher", false);
+            request.setAttribute("dispatcher", false);
             log.debug("LoginCommand::execute - LoginCommand finished");
             return forward;
         }
@@ -46,24 +49,22 @@ public class LoginCommand implements Command {
         String userLogin = request.getParameter("login");
         String userPassword = request.getParameter("password");
         log.trace("LoginCommand::execute - Got from request parameter \"login\": " + userLogin);
-        UserDAO userDAO = null;
 
         if (userLogin == null || userPassword == null || userLogin.isEmpty() || userPassword.isEmpty()){
             log.trace("LoginCommand::execute - Request didn't have login or password back to login page");
             log.debug("LoginCommand::execute - LoginCommand finished");
-            session.setAttribute("dispatcher", true);
+            request.setAttribute("dispatcher", true);
             forward = Path.LOGIN_PAGE;
             return forward;
         }
 
         //try to find user in DB
-        userDAO =DAOFactory.getUserDAO();
-        User user = userDAO.getUserByLogin(userLogin);
+        User user = userService.getUserByLogin(userLogin);
 
         if (user != null && user.isBlocked()){
             String error = "You blocked. Ask administrator for permission";
             request.setAttribute("error", error);
-            session.setAttribute("dispatcher", true);
+            request.setAttribute("dispatcher", true);
             forward = Path.LOGIN_PAGE;
             return forward;
         }
@@ -73,7 +74,7 @@ public class LoginCommand implements Command {
             String error = "Your login or password incorrect";
             request.setAttribute("error", error);
             log.trace("LoginCommand::execute - Set to request \"error\": " + error);
-            session.setAttribute("dispatcher", true);
+            request.setAttribute("dispatcher", true);
             forward = Path.LOGIN_PAGE;
             log.debug("LoginCommand::execute - LoginCommand finished");
             return forward;
@@ -84,7 +85,7 @@ public class LoginCommand implements Command {
         session.setAttribute("userRole", userRole);
         //forward to MainPage for Role
         if(userRole == Role.ADMIN){
-            session.setAttribute("dispatcher", false);
+            request.setAttribute("dispatcher", false);
             forward = Path.COMMAND_ADMIN_PAGE;
             log.debug("LoginCommand::execute - LoginCommand finished");
             return forward;
@@ -92,14 +93,14 @@ public class LoginCommand implements Command {
 
         if(userRole == Role.COACH){
             forward = Path.COMMAND_COACH_PANEL;
-            session.setAttribute("dispatcher", false);
+            request.setAttribute("dispatcher", false);
             log.debug("LoginCommand::execute - LoginCommand finished");
             return forward;
         }
 
         if(userRole == Role.STUDENT){
             forward = Path.COMMAND_STUDENT_PAGE;
-            session.setAttribute("dispatcher", false);
+            request.setAttribute("dispatcher", false);
             log.debug("LoginCommand::execute - LoginCommand finished");
             return forward;
         }

@@ -1,4 +1,4 @@
-package ua.nure.semianikhin.elective.dao;
+package ua.nure.semianikhin.elective.dao.executor;
 
 import java.sql.ResultSet;
 

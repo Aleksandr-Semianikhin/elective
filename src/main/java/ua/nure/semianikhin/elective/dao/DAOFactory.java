@@ -1,20 +1,25 @@
 package ua.nure.semianikhin.elective.dao;
 
+import ua.nure.semianikhin.elective.dao.MySqlImpl.CourseDAOImplMySql;
+import ua.nure.semianikhin.elective.dao.MySqlImpl.RegisterDAOImplMySql;
+import ua.nure.semianikhin.elective.dao.MySqlImpl.TagDAOImplMySql;
+import ua.nure.semianikhin.elective.dao.MySqlImpl.UserDAOImplMySql;
+
 public class DAOFactory {
 
-    public static CourseDAO getCourseDAO(){
-        return new CourseDAO();
+    public static ICourseDAO getCourseDAO(){
+        return new CourseDAOImplMySql();
     }
 
-    public static RegisterDAO getRegisterDao(){
-        return new RegisterDAO();
+    public static IRegisterDAO getRegisterDao(){
+        return new RegisterDAOImplMySql();
     }
 
-    public static TagDAO getTagDAO(){
-        return new TagDAO();
+    public static ITagDAO getTagDAO(){
+        return new TagDAOImplMySql();
     }
 
-    public static UserDAO getUserDAO(){
-        return new UserDAO();
+    public static IUserDAO getUserDAO(){
+        return new UserDAOImplMySql();
     }
 }

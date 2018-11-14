@@ -1,4 +1,4 @@
-package ua.nure.semianikhin.elective.enteties;
+package ua.nure.semianikhin.elective.domain;
 
 /**
  *Category Entity

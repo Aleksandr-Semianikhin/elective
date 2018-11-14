@@ -1,36 +1,38 @@
 package ua.nure.semianikhin.elective.controller;
 
+import lombok.extern.log4j.Log4j;
 import org.apache.log4j.Logger;
-import ua.nure.semianikhin.elective.Path;
 import ua.nure.semianikhin.elective.command.Command;
 import ua.nure.semianikhin.elective.command.CommandFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.HandlesTypes;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+
+@Log4j
 @WebServlet(urlPatterns = {"/index", "/admin", "/coach", "/student"})
 public class MainController extends HttpServlet {
-    private static final Logger log = Logger.getLogger(MainController.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.debug("MainController::doGet - Main controller started");
-        process(req, resp, true);
+        req.setAttribute("dispatcher", true);
+        process(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.debug("MainController::doPost - Main controller started");
-        process(req, resp, false);
+        req.setAttribute("dispatcher", false);
+        process(req, resp);
     }
 
-    private void process(HttpServletRequest req, HttpServletResponse resp, boolean method) throws ServletException, IOException{
+    private void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
         log.debug("MainController::process - Main controller started");
         String uri = req.getRequestURI();
         log.debug("MainController::process - Get URI from request, URI = " + uri);
@@ -49,7 +51,7 @@ public class MainController extends HttpServlet {
         String forward = command.execute(req, resp);
         log.trace("MainController::process - Got forward address: " + forward);
         HttpSession session = req.getSession();
-        boolean dispatcher = (boolean)session.getAttribute("dispatcher");
+        boolean dispatcher = (boolean)req.getAttribute("dispatcher");
         if (forward != null){
             if (dispatcher) {
                 log.trace("MainController::process - Use RequestDispatcher.forward");

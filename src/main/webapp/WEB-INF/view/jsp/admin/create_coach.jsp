@@ -33,10 +33,10 @@
                     <label for="password"><fmt:message key="admin.create.coach.password"/></label>
                     <input type="password" class="form-control" id="password" name="password" required
                            minlength="8" maxlength="20">
-                    <label for="userFirstName"><fmt:message key="admin.create.coach.firstName"/></label>
-                    <input type="text" class="form-control" id="userFirstName" name="userFirstName" required minlength="2">
-                    <label for="userLastName"><fmt:message key="admin.create.coach.lastName"/></label>
-                    <input type="text" class="form-control" id="userLastName" name="userLastName" required minlength="2"><br/>
+                    <label for="firstName"><fmt:message key="admin.create.coach.firstName"/></label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" required minlength="2">
+                    <label for="lastName"><fmt:message key="admin.create.coach.lastName"/></label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" required minlength="2"><br/>
                     <button class="btn btn-info" type="submit">
                         <fmt:message key="admin.create.coach.button"/></button>
                 </form>

@@ -3,12 +3,9 @@ package ua.nure.semianikhin.elective.command.student;
 import org.apache.log4j.Logger;
 import ua.nure.semianikhin.elective.Path;
 import ua.nure.semianikhin.elective.command.Command;
-import ua.nure.semianikhin.elective.dao.CourseDAO;
-import ua.nure.semianikhin.elective.dao.DAOFactory;
-import ua.nure.semianikhin.elective.dao.RegisterDAO;
-import ua.nure.semianikhin.elective.enteties.Course;
-import ua.nure.semianikhin.elective.enteties.User;
-import ua.nure.semianikhin.elective.exception.CourseAlreadyExistException;
+import ua.nure.semianikhin.elective.dao.*;
+import ua.nure.semianikhin.elective.domain.Course;
+import ua.nure.semianikhin.elective.domain.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,10 +23,10 @@ public class RegisterToCourseCommand implements Command {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         int userId = user.getIdUser();
-        RegisterDAO registerDAO = DAOFactory.getRegisterDao();
+        IRegisterDAO registerDAO = DAOFactory.getRegisterDao();
         registerDAO.createEntryInRegister(userId, courseId);
         //increment course's count
-        CourseDAO courseDAO = DAOFactory.getCourseDAO();
+        ICourseDAO courseDAO = DAOFactory.getCourseDAO();
         Course course = courseDAO.getCourseById(courseId);
         int count = course.getCountStudents();
         courseDAO.updateCountStudents(courseId, count+1);

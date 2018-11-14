@@ -196,7 +196,6 @@
                         <tr>
                             <th>#</th>
                             <th><fmt:message key="admin.table.four.tagName"/> </th>
-                            <th><fmt:message key="admin.table.four.tagDescription"/> </th>
                             <th colspan="2"><fmt:message key="admin.table.four.action"/> </th>
                         </tr>
                         </thead>
@@ -207,7 +206,6 @@
                             <tr>
                                 <td><c:out value="${count}"/></td>
                                 <td><c:out value="${entry.name}"/></td>
-                                <td><c:out value="${entry.description}"/></td>
                                 <td>
                                     <form action="admin" method="get">
                                         <input hidden name="command" value="adminActionTag">

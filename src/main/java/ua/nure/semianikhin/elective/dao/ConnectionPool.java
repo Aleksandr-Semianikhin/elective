@@ -1,6 +1,7 @@
 package ua.nure.semianikhin.elective.dao;
 
 
+import lombok.extern.log4j.Log4j;
 import org.apache.log4j.Logger;
 
 import javax.naming.Context;
@@ -14,19 +15,12 @@ import java.sql.SQLException;
  *DB Manager works with
  * Only the required DAO methods are defined!
  */
-
-class ConnectionPool {
-
-    private static final Logger log = Logger.getLogger(ConnectionPool.class);
-    /**
-    *
-    * Singleton class
-    *
-    */
+@Log4j
+public class ConnectionPool {
 
     private static ConnectionPool instance;
 
-    static synchronized ConnectionPool getInstance() {
+    public static synchronized ConnectionPool getInstance() {
         if (instance == null)
             instance = new ConnectionPool();
         return instance;
@@ -40,7 +34,7 @@ class ConnectionPool {
      *
      * @return A DB connection.
      */
-    Connection getConnection() throws SQLException {
+    public Connection getConnection() throws SQLException {
         Connection con = null;
         try {
             Context initContext = new InitialContext();
@@ -62,7 +56,7 @@ class ConnectionPool {
      * @param con
      *            Connection to be committed and closed.
      */
-    void commitAndClose(Connection con) {
+    public void commitAndClose(Connection con) {
         if (con != null) {
             try {
                 con.commit();
@@ -79,13 +73,23 @@ class ConnectionPool {
      * @param con
      *            Connection to be rollbacked and closed.
      */
-    void rollbackAndClose(Connection con) {
+    public void rollbackAndClose(Connection con) {
         if (con != null){
             try {
                 con.rollback();
                 con.close();
             } catch (SQLException e) {
                 log.error("SQLException in ConnectionPool::rollbackAndClose - can't close Connection", e);
+            }
+        }
+    }
+
+    public void close(AutoCloseable autoCloseable){
+        if (autoCloseable != null){
+            try{
+                autoCloseable.close();
+            } catch (Exception e) {
+                log.error("Exception in ConnectionPool::close - can't close AutoCloseable object");
             }
         }
     }

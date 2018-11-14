@@ -1,9 +1,9 @@
-package ua.nure.semianikhin.elective.dao;
+package ua.nure.semianikhin.elective.dao.Mappers;
 
 /**
  *Category Entity
  */
-class Fields {
+public class Fields {
 
     static final String USER_ID = "id_user";
     static final String USER_LOGIN = "user_login";
@@ -15,7 +15,6 @@ class Fields {
 
     static final String TAG_ID = "id_tag";
     static final String TAG_NAME = "tag_name";
-    static final String TAG_DESCRIPTION = "tag_description";
 
     static final String COURSE_ID = "id_course";
     static final String COURSE_NAME = "course_name";

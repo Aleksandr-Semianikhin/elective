@@ -4,7 +4,8 @@ import org.apache.log4j.Logger;
 import ua.nure.semianikhin.elective.Path;
 import ua.nure.semianikhin.elective.command.Command;
 import ua.nure.semianikhin.elective.dao.DAOFactory;
-import ua.nure.semianikhin.elective.dao.RegisterDAO;
+import ua.nure.semianikhin.elective.dao.IRegisterDAO;
+import ua.nure.semianikhin.elective.dao.MySqlImpl.RegisterDAOImplMySql;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +22,7 @@ public class SetMarkCommand implements Command {
         String forward = null;
         String[] marks = request.getParameterValues("marks");
         String[] ids = request.getParameterValues("ids");
-        RegisterDAO registerDAO = DAOFactory.getRegisterDao();
+        IRegisterDAO registerDAO = DAOFactory.getRegisterDao();
         if (marks != null && marks.length == ids.length){
             for (int i = 0; i < marks.length; i++) {
                 int id = Integer.parseInt(ids[i]);
